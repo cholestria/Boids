@@ -93,11 +93,11 @@ class Boids:
         if event.button is 1:
             self.pos = np.concatenate((self.pos,
                                        np.array([[event.xdata, event.ydata]])),
-                                       axis=0)
+                                      axis=0)
             #generate a random velocity
             angles = 2*math.pi*np.random.rand(1)
             v = np.array(list(zip(np.sin(angles), np.cos(angles))))
-            self.vel = np.concatenates((self.vel, v), axis=0)
+            self.vel = np.concatenate((self.vel, v), axis=0)
             self.N += 1
 
         # right-click to scatter boids
