@@ -8,18 +8,19 @@ from numpy.linalg import norm
 
 width, height = 640, 480
 
+
 class Boids:
-    """class that represents Boids simulation"""
+    """Class that represents Boids simulation"""
     def __init__(self, N):
         """initialize the Boid simulation"""
         # initial position and velocities
         self.pos = [width/2.0, height/2.0] + 10*np.random.rand(2*N).reshape(N, 2)
         # normalized random velocities
-        angles =  2*math.pi*np.random.rand(N)
+        angles = 2*math.pi*np.random.rand(N)
         self.vel = np.array(list(zip(np.sin(angles), np.cos(angles))))
         self.N = N
         # minimum distance of approach
-        self.minDist =  25.0
+        self.minDist = 25.0
         # maximum magnitude of velocities calculated by "rules"
         self.maxRuleVel = 0.03
         # maximum magnitude of he final velocity
@@ -28,7 +29,7 @@ class Boids:
     def tick(self, frameNum, pts, beak):
         """update the simulation one step at a time"""
         # get pairwise distances
-        self.distMatrix =  squareform(pdist(self.pos))
+        self.distMatrix = squareform(pdist(self.pos))
         # apply rules
         self.vel += self.applyRules()
         self.limit(self.vel, self.maxVel)
@@ -61,9 +62,9 @@ class Boids:
             if coord[0] < - deltaR:
                 coord[0] = width + deltaR
             if coord[1] > height + deltaR:
-                coord[1] = -deltaR
+                coord[1] = - deltaR
             if coord[1] < - deltaR:
-                coord[1] =  height + deltaR
+                coord[1] = height + deltaR
 
     def applyRules(self):
         # apply rule #1: Seperation
@@ -77,7 +78,7 @@ class Boids:
         # apply rule #2: Alignment
         vel2 = D.dot(self.vel)
         self.limit(vel2, self.maxRuleVel)
-        vel += vel2;
+        vel += vel2
 
         # appply rule #3: Cohesion
         vel3 = D.dot(self.pos) - self.pos
@@ -90,24 +91,27 @@ class Boids:
         """event handler for matplotlib button presses"""
         # left-click to add a boid
         if event.button is 1:
-            self.pos =  np.concatenate((self.pos,
-                                    np.array([[event.xdata, event.ydata]])),
-                                    axis=0)
+            self.pos = np.concatenate((self.pos,
+                                       np.array([[event.xdata, event.ydata]])),
+                                       axis=0)
             #generate a random velocity
-            angles =  2*math.pi*np.random.rand(1)
+            angles = 2*math.pi*np.random.rand(1)
             v = np.array(list(zip(np.sin(angles), np.cos(angles))))
             self.vel = np.concatenates((self.vel, v), axis=0)
-            self.N =+ 1
+            self.N += 1
 
         # right-click to scatter boids
         elif event.button is 3:
             # add scattering velocity
             self.vel += 0.1*(self.pos - np.array([[event.xdata, event.ydata]]))
 
+
 def tick(frameNum, pts, beak, boids):
-    # print frameNum
+    #print frameNum
+    """update function for animation"""
     boids.tick(frameNum, pts, beak)
     return pts, beak
+
 
 # main() function
 def main():
