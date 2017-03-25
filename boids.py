@@ -1,3 +1,5 @@
+""" Boids is a project created following Mahesh Venkitachalam's Python Playground """
+
 import sys, argparse
 import math
 import numpy as np
